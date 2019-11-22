@@ -8,10 +8,11 @@ public
 class ReportFactory
 {
   public static
-  ReportInfo getDefaultReportInfo(String sTitle, String sTemplate)
+  ReportInfo getReportInfo(String sTitle, String sTemplate)
   {
-    ReportInfo oReportInfo = new ReportInfo(sTitle, sTemplate);
-    URL urlTemplate = Thread.currentThread().getContextClassLoader().getResource("reports/" + oReportInfo.getTemplate());
+    ReportInfo reportInfo = new ReportInfo(sTitle, sTemplate);
+    
+    URL urlTemplate = Thread.currentThread().getContextClassLoader().getResource("reports/" + reportInfo.getTemplate());
     if(urlTemplate != null) {
       
       String sImagesPath = urlTemplate.toString();
@@ -20,16 +21,30 @@ class ReportFactory
       
       Map<String,Object> mapParameters = new HashMap<String,Object>();
       mapParameters.put("IMAGES_PATH", sImagesPath);
-      oReportInfo.setParameters(mapParameters);
+      reportInfo.setParameters(mapParameters);
       
     }
-    return oReportInfo;
+    
+    return reportInfo;
   }
   
   public static
-  IReportBuilder getDefaultReportBuilder(String sType)
+  IReportBuilder getReportBuilder(String sType)
   {
-    IReportBuilder oReportBuilder = new JasperReportsBuilder();
-    return oReportBuilder;
+    IReportBuilder reportBuilder = new JasperReportsBuilder();
+    
+    if(sType != null && sType.equalsIgnoreCase("jasper")) {
+      reportBuilder = new JasperReportsBuilder();
+    }
+    else
+    if(sType != null && sType.equalsIgnoreCase("test")) {
+      reportBuilder = new TestReportBuilder();
+    }
+    else {
+      // Default Report Builder
+      reportBuilder = new JasperReportsBuilder();
+    }
+    
+    return reportBuilder;
   }
 }

@@ -8,10 +8,10 @@ A simple convenience library to wrap report generation.
 List<Map<String,Object>> data = new ArrayList<Map<String,Object>>();
 // Populate data...
 
-ReportInfo ri = ReportFactory.getDefaultReportInfo("Test report", "test.jasper");
+ReportInfo ri = ReportFactory.getReportInfo("Test report", "test.jasper");
 ri.addArea("Detail", data);
 
-IReportBuilder rb = ReportFactory.getDefaultReportBuilder("jasper");
+IReportBuilder rb = ReportFactory.getReportBuilder("jasper");
 rb.setReportInfo(ri);
 
 rb.generate(new FileOutputStream("test.pdf"));

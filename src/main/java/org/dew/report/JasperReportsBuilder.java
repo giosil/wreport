@@ -41,6 +41,7 @@ class JasperReportsBuilder implements IReportBuilder
    *
    * @param reportInfo ReportInfo
    */
+  @Override
   public void setReportInfo(ReportInfo reportInfo) {
     this.reportInfo = reportInfo;
   }
@@ -50,6 +51,7 @@ class JasperReportsBuilder implements IReportBuilder
    *
    * @return ReportInfo
    */
+  @Override
   public ReportInfo getReportInfo() {
     return reportInfo;
   }
@@ -60,6 +62,7 @@ class JasperReportsBuilder implements IReportBuilder
    * @param outputStream OutputStream
    * @throws Exception
    */
+  @Override
   public void generate(OutputStream outputStream) throws Exception {
     if (reportInfo == null) {
       throw new Exception("ReportInfo undefined.");

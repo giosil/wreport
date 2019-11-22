@@ -41,12 +41,12 @@ public class TestWReport extends TestCase {
       addRecord(listData, "idComune", "058091", "codFiscale", "H501", "descrizione", "ROMA");
       addRecord(listData, "idComune", "056059", "codFiscale", "M082", "descrizione", "VITERBO");
       
-      System.out.println("ReportFactory.getDefaultReportInfo...");
-      ReportInfo reportInfo = ReportFactory.getDefaultReportInfo("Comuni", "comuni.jasper");
+      System.out.println("ReportFactory.getReportInfo...");
+      ReportInfo reportInfo = ReportFactory.getReportInfo("Comuni", "comuni.jasper");
       reportInfo.addArea("Detail", listData);
       
-      System.out.println("ReportFactory.getDefaultReportBuilder...");
-      IReportBuilder reportBuilder = ReportFactory.getDefaultReportBuilder("jasper");
+      System.out.println("ReportFactory.getReportBuilder...");
+      IReportBuilder reportBuilder = ReportFactory.getReportBuilder("jasper");
       reportBuilder.setReportInfo(reportInfo);
       
       System.out.println("reportBuilder.generate...");
