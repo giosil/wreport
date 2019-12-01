@@ -1,6 +1,6 @@
 # WReport - Wrap Report generation
 
-A simple convenience library to wrap report generation.
+A small library to wrap report generation engines.
 
 ## Example
 
