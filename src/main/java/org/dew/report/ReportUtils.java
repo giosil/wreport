@@ -194,6 +194,9 @@ class ReportUtils
         else if(contentType != null && contentType.endsWith("bmp")) {
           ImageIO.write(bufferedImage, "bmp", result);
         }
+        else if(contentType != null && contentType.endsWith("gif")) {
+          ImageIO.write(bufferedImage, "gif", result);
+        }
         else {
           ImageIO.write(bufferedImage, "jpg", result);
         }
@@ -202,6 +205,48 @@ class ReportUtils
     }
     finally {
       if(pdDocument != null) try{ pdDocument.close(); } catch(Exception ex) {}
+    }
+    
+    return result.toByteArray();
+  }
+  
+  public static
+  byte[] rotateImage(byte[] image)
+    throws Exception
+  {
+    if(image == null || image.length == 0) {
+      return image;
+    }
+    
+    String contentType = detectContentType(image);
+    if(contentType == null || !contentType.startsWith("image")) {
+      return image;
+    }
+     
+    ByteArrayOutputStream result = new ByteArrayOutputStream();
+    
+    BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(image));
+    int iWidth  = bufferedImage.getWidth(null);
+    int iHeight = bufferedImage.getHeight(null);
+    
+    BufferedImage biRotate = new BufferedImage(iWidth, iHeight, bufferedImage.getType());
+    for(int i = 0; i < iWidth; i++) {
+       for(int j = 0; j < iHeight; j++) {
+         biRotate.setRGB(iWidth-1-i, iHeight-1-j, bufferedImage.getRGB(i, j));
+       }
+    }
+    
+    if(contentType != null && contentType.endsWith("png")) {
+      ImageIO.write(biRotate, "png", result);
+    }
+    else if(contentType != null && contentType.endsWith("bmp")) {
+      ImageIO.write(biRotate, "bmp", result);
+    }
+    else if(contentType != null && contentType.endsWith("gif")) {
+      ImageIO.write(bufferedImage, "gif", result);
+    }
+    else {
+      ImageIO.write(biRotate, "jpg", result);
     }
     
     return result.toByteArray();
