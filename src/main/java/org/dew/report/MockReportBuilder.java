@@ -4,24 +4,32 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 /**
- * Classe utile per i test.
+ * Mock IReportBuilder.
  */
-public class TestReportBuilder  implements IReportBuilder {
+public 
+class MockReportBuilder implements IReportBuilder 
+{
   protected ReportInfo reportInfo;
-
+  
   @Override
-  public void setReportInfo(ReportInfo reportInfo) {
+  public 
+  void setReportInfo(ReportInfo reportInfo) 
+  {
     this.reportInfo = reportInfo;
   }
-
+  
   @Override
-  public ReportInfo getReportInfo() {
+  public 
+  ReportInfo getReportInfo() 
+  {
     return reportInfo;
   }
-
+  
   @Override
-  public void generate(OutputStream outputStream) throws Exception {
-    
+  public 
+  void generate(OutputStream outputStream) 
+    throws Exception 
+  {
     if (reportInfo == null) {
       throw new Exception("ReportInfo undefined.");
     }

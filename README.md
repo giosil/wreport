@@ -17,6 +17,39 @@ rb.setReportInfo(ri);
 rb.generate(new FileOutputStream("test.pdf"));
 ```
 
+## Servlet Example
+```java
+public 
+class WebReport extends HttpServlet
+{
+  public 
+  void doGet(HttpServletRequest request, HttpServletResponse response) 
+    throws ServletException, IOException 
+  {
+    try {
+      List<Map<String,Object>> listData = DAOTestData.getAll();
+      
+      ReportInfo reportInfo = ReportFactory.getReportInfo("Comuni", "comuni.jasper");
+      
+      reportInfo.addArea("Detail", listData);
+      
+      response.setContentType("application/pdf");
+      
+      OutputStream out = response.getOutputStream();
+      
+      IReportBuilder reportBuilder = ReportFactory.getDefaultReportBuilder();
+      
+      reportBuilder.setReportInfo(reportInfo);
+      
+      reportBuilder.generate(out);
+    } 
+    catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+  }
+}
+```
+
 ## Build
 
 - `git clone https://github.com/giosil/wreport.git`
