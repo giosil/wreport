@@ -13,7 +13,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageTree;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
@@ -153,41 +154,50 @@ class ReportUtils
   {
     ByteArrayOutputStream result = new ByteArrayOutputStream();
     
-    BufferedImage image = null;
+    BufferedImage bufferedImage = null;
     PDDocument pdDocument = null;
     try {
       pdDocument = PDDocument.load(new ByteArrayInputStream(content));
       
-      @SuppressWarnings("unchecked")
-      List<PDPage> pages = pdDocument.getDocumentCatalog().getAllPages();
+      PDPageTree pdPageTree = pdDocument.getDocumentCatalog().getPages();
       
-      int iPages = pages != null ? pages.size() : 0;
+      int pages = pdPageTree != null ? pdPageTree.getCount() : 0;
       
-      if(iPages == 1) {
-        image = pages.get(0).convertToImage(BufferedImage.TYPE_INT_RGB, 72);
+      PDFRenderer pdfRenderer = new PDFRenderer(pdDocument);
+      
+      if(pages == 1) {
+        
+        bufferedImage = pdfRenderer.renderImageWithDPI(0, 300);
+      
       }
-      else if(iPages > 1) {
-        for(int i = 0; i < iPages; i++) {
-          BufferedImage imgPage = pages.get(i).convertToImage(BufferedImage.TYPE_INT_RGB, 72);
-          if(image == null) {
-            image = new BufferedImage(imgPage.getWidth(), imgPage.getHeight()*iPages, BufferedImage.TYPE_INT_RGB);
+      else if(pages > 1) {
+        
+        for(int i = 0; i < pages; i++) {
+          
+          BufferedImage bufferedImagePage = pdfRenderer.renderImageWithDPI(i, 300);
+          
+          if(bufferedImage == null) {
+            bufferedImage = new BufferedImage(bufferedImagePage.getWidth(), bufferedImagePage.getHeight() * pages, BufferedImage.TYPE_INT_RGB);
           }
           
-          Graphics graphics = image.getGraphics();
-          graphics.drawImage(imgPage, 0, i*imgPage.getHeight(), null);
+          Graphics graphics = bufferedImage.getGraphics();
+          graphics.drawImage(bufferedImagePage, 0, i * bufferedImagePage.getHeight(), null);
         }
+        
       }
       
-      if(image != null) {
+      if(bufferedImage != null) {
+        
         if(contentType != null && contentType.endsWith("png")) {
-          ImageIO.write(image, "png", result);
+          ImageIO.write(bufferedImage, "png", result);
         }
         else if(contentType != null && contentType.endsWith("bmp")) {
-          ImageIO.write(image, "bmp", result);
+          ImageIO.write(bufferedImage, "bmp", result);
         }
         else {
-          ImageIO.write(image, "jpg", result);
+          ImageIO.write(bufferedImage, "jpg", result);
         }
+        
       }
     }
     finally {
