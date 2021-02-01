@@ -1,44 +1,33 @@
 package org.dew.report;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
 import java.net.URL;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.PageSize;
-
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfImportedPage;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfWriter;
 
 public
 class ReportFactory
 {
+  public static String REPORTS_FOLDER  = "reports";
+  public static String PAR_IMAGES_PATH = "IMAGES_PATH";
+  
   public static
-  ReportInfo getReportInfo(String sTitle, String sTemplate)
+  ReportInfo getReportInfo(String title, String template)
   {
-    ReportInfo reportInfo = new ReportInfo(sTitle, sTemplate);
+    ReportInfo reportInfo = new ReportInfo(title, template);
     
-    URL urlTemplate = Thread.currentThread().getContextClassLoader().getResource("reports/" + reportInfo.getTemplate());
-    if(urlTemplate != null) {
-      
-      String sImagesPath = urlTemplate.toString();
-      int iLastSep = sImagesPath.lastIndexOf('/');
-      if(iLastSep > 0) sImagesPath = sImagesPath.substring(0, iLastSep + 1);
-      
-      Map<String,Object> mapParameters = new HashMap<String,Object>();
-      mapParameters.put("IMAGES_PATH", sImagesPath);
-      reportInfo.setParameters(mapParameters);
-      
+    URL urlTemplate = Thread.currentThread().getContextClassLoader().getResource(REPORTS_FOLDER + "/" + reportInfo.getTemplate());
+    if(urlTemplate == null) {
+      return reportInfo;
     }
+    
+    String sImagesPath = urlTemplate.toString();
+    int iLastSep = sImagesPath.lastIndexOf('/');
+    if(iLastSep > 0) sImagesPath = sImagesPath.substring(0, iLastSep + 1);
+    
+    Map<String,Object> mapParameters = new HashMap<String,Object>();
+    mapParameters.put(PAR_IMAGES_PATH, sImagesPath);
+    reportInfo.setParameters(mapParameters);
     
     return reportInfo;
   }
@@ -69,36 +58,5 @@ class ReportFactory
     }
     
     return reportBuilder;
-  }
-  
-  public static 
-  void mergePDF(List<ByteArrayOutputStream> listOfOutputStream, OutputStream outputStream)
-    throws DocumentException, IOException 
-  {
-    Document document = null;
-    try {
-      document = new Document(PageSize.A4);
-      
-      PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-      document.open();
-      
-      PdfContentByte pdfContentByte = writer.getDirectContent();
-      for (ByteArrayOutputStream singleOut : listOfOutputStream) {
-        
-        PdfReader reader = new PdfReader(singleOut.toByteArray());
-        
-        for (int i = 1; i <= reader.getNumberOfPages(); i++) {
-          document.newPage();
-          // import the page from source pdf
-          PdfImportedPage page = writer.getImportedPage(reader, i);
-          // add the page to the destination pdf
-          pdfContentByte.addTemplate(page, 0, 0);
-        }
-      }
-    }
-    finally {
-      document.close();
-      outputStream.flush();
-    }
   }
 }
