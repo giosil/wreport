@@ -1,8 +1,13 @@
 package org.dew.report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRField;
 
 /**
  * Sorgente dati per il motore di stampa JasperReports.

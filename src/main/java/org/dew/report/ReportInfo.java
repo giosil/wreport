@@ -1,8 +1,13 @@
 package org.dew.report;
 
-import java.util.*;
 import java.io.Serializable;
+
 import java.sql.Connection;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Classe per la definizione di un report.
@@ -16,13 +21,13 @@ class ReportInfo implements Serializable
   protected String sTemplate;
   protected String sType;
   protected List<String> listAree = new ArrayList<String>();
-  protected Map<String,Map<String,Object>> mapAreaInfo = new HashMap<String,Map<String,Object>>();
+  protected Map<String, Map<String, Object>> mapAreaInfo = new HashMap<String, Map<String, Object>>();
   
-  protected Map<String,Object> mapHeaderValues;
-  protected Map<String,Object> mapPageHeaderValues;
-  protected Map<String,Object> mapFooterValues;
-  protected Map<String,Object> mapPageFooterValues;
-  protected Map<String,Object> mapParameters;
+  protected Map<String, Object> mapHeaderValues;
+  protected Map<String, Object> mapPageHeaderValues;
+  protected Map<String, Object> mapFooterValues;
+  protected Map<String, Object> mapPageFooterValues;
+  protected Map<String, Object> mapParameters;
   protected String sBackgroundText;
   
   protected final static String sAREA_VALUES    = "values";
@@ -336,7 +341,7 @@ class ReportInfo implements Serializable
    * @param mapValues Valori
    */
   public
-  void setReportHeader(Map<String,Object> mapValues)
+  void setReportHeader(Map<String, Object> mapValues)
   {
     this.mapHeaderValues = mapValues;
   }
@@ -347,7 +352,7 @@ class ReportInfo implements Serializable
    * @return Mappa dei valori dell'intestazione di report
    */
   public
-  Map<String,Object> getReportHeader()
+  Map<String, Object> getReportHeader()
   {
     return mapHeaderValues;
   }
@@ -358,7 +363,7 @@ class ReportInfo implements Serializable
    * @param mapValues Valori
    */
   public
-  void setPageHeader(Map<String,Object> mapValues)
+  void setPageHeader(Map<String, Object> mapValues)
   {
     this.mapPageHeaderValues = mapValues;
   }
@@ -369,7 +374,7 @@ class ReportInfo implements Serializable
    * @return Map Valori
    */
   public
-  Map<String,Object> getPageHeader()
+  Map<String, Object> getPageHeader()
   {
     return mapPageHeaderValues;
   }
@@ -380,7 +385,7 @@ class ReportInfo implements Serializable
    * @param mapValues Valori
    */
   public
-  void setReportFooter(Map<String,Object> mapValues)
+  void setReportFooter(Map<String, Object> mapValues)
   {
     this.mapFooterValues = mapValues;
   }
@@ -391,7 +396,7 @@ class ReportInfo implements Serializable
    * @return Map
    */
   public
-  Map<String,Object> getReportFooter()
+  Map<String, Object> getReportFooter()
   {
     return mapFooterValues;
   }
@@ -402,7 +407,7 @@ class ReportInfo implements Serializable
    * @param mapValues Valori
    */
   public
-  void setPageFooter(Map<String,Object> mapValues)
+  void setPageFooter(Map<String, Object> mapValues)
   {
     this.mapPageFooterValues = mapValues;
   }
@@ -413,7 +418,7 @@ class ReportInfo implements Serializable
    * @return Map
    */
   public
-  Map<String,Object> getPageFooter()
+  Map<String, Object> getPageFooter()
   {
     return mapPageFooterValues;
   }
@@ -424,7 +429,7 @@ class ReportInfo implements Serializable
    * @param mapParameters Parametri
    */
   public
-  void setParameters(Map<String,Object> mapParameters)
+  void setParameters(Map<String, Object> mapParameters)
   {
     if(this.mapParameters != null && !this.mapParameters.isEmpty()) {
       this.mapParameters.putAll(mapParameters);
@@ -440,7 +445,7 @@ class ReportInfo implements Serializable
    * @return Map
    */
   public
-  Map<String,Object> getParameters()
+  Map<String, Object> getParameters()
   {
     return mapParameters;
   }
@@ -448,50 +453,50 @@ class ReportInfo implements Serializable
   /**
    * Aggiunge un'area dati indipendente dalle altre.
    *
-   * @param sAreaName String
+   * @param areaName String
    * @param oValues Object
    */
   public
-  void addArea(String sAreaName, Object oValues)
+  void addArea(String areaName, Object oValues)
   {
-    listAree.add(sAreaName);
+    listAree.add(areaName);
     
-    Map<String,Object> mapInfo = new HashMap<String,Object>();
+    Map<String, Object> mapInfo = new HashMap<String, Object>();
     mapInfo.put(sAREA_VALUES,   oValues);
     mapInfo.put(sAREA_LINKEDTO, null);
     
-    mapAreaInfo.put(sAreaName, mapInfo);
+    mapAreaInfo.put(areaName, mapInfo);
   }
   
   /**
    * Aggiunge un'area dati specificando l'area a cui � legata.
    * Nei report Master-Detail � importante specificare le relazioni.
    *
-   * @param sAreaName String
+   * @param areaName String
    * @param oValues Object
    * @param sLinkedArea Nome dell'area collegata
    */
   public
-  void addArea(String sAreaName, Object oValues, String sLinkedArea)
+  void addArea(String areaName, Object oValues, String sLinkedArea)
   {
-    listAree.add(sAreaName);
+    listAree.add(areaName);
     
-    Map<String,Object> mapInfo = new HashMap<String,Object>();
+    Map<String, Object> mapInfo = new HashMap<String, Object>();
     mapInfo.put(sAREA_VALUES,   oValues);
     mapInfo.put(sAREA_LINKEDTO, sLinkedArea);
     
-    mapAreaInfo.put(sAreaName, mapInfo);
+    mapAreaInfo.put(areaName, mapInfo);
   }
   
   /**
    * Rimuove un'area dati.
-   * @param sAreaName String
+   * @param areaName String
    */
   public
-  void removeArea(String sAreaName)
+  void removeArea(String areaName)
   {
-    listAree.remove(sAreaName);
-    mapAreaInfo.remove(sAreaName);
+    listAree.remove(areaName);
+    mapAreaInfo.remove(areaName);
   }
   
   /**
@@ -517,8 +522,8 @@ class ReportInfo implements Serializable
   Object getAreaValues(int iIndex)
   {
     if(listAree.size() <= iIndex) return null;
-    String sAreaName = (String) listAree.get(iIndex);
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
+    String areaName = (String) listAree.get(iIndex);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
     if(mapInfo == null) return null;
     return mapInfo.get(sAREA_VALUES);
   }
@@ -526,13 +531,13 @@ class ReportInfo implements Serializable
   /**
    * Restituisce i dati contenuti nell'area individuata dal nome.
    *
-   * @param sAreaName String
+   * @param areaName String
    * @return Object values
    */
   public
-  Object getAreaValues(String sAreaName)
+  Object getAreaValues(String areaName)
   {
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
     if(mapInfo == null) return null;
     return mapInfo.get(sAREA_VALUES);
   }
@@ -547,8 +552,8 @@ class ReportInfo implements Serializable
   String getLinkedArea(int iIndex)
   {
     if(listAree.size() <= iIndex) return null;
-    String sAreaName = (String) listAree.get(iIndex);
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
+    String areaName = (String) listAree.get(iIndex);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
     if(mapInfo == null) return null;
     return (String) mapInfo.get(sAREA_LINKEDTO);
   }
@@ -556,13 +561,13 @@ class ReportInfo implements Serializable
   /**
    * Restituisce l'area collegata.
    *
-   * @param sAreaName String
+   * @param areaName String
    * @return String
    */
   public
-  String getLinkedArea(String sAreaName)
+  String getLinkedArea(String areaName)
   {
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
     if(mapInfo == null) return null;
     return (String) mapInfo.get(sAREA_LINKEDTO);
   }
@@ -577,8 +582,8 @@ class ReportInfo implements Serializable
   boolean isLinked(int iIndex)
   {
     if(listAree.size() <= iIndex) return false;
-    String sAreaName = (String) listAree.get(iIndex);
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
+    String areaName = (String) listAree.get(iIndex);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
     if(mapInfo == null) return false;
     String sLinkedArea = (String) mapInfo.get(sAREA_LINKEDTO);
     return sLinkedArea != null;
@@ -587,13 +592,13 @@ class ReportInfo implements Serializable
   /**
    * Verifica che l'area sia colleagata.
    *
-   * @param sAreaName String
+   * @param areaName String
    * @return boolean
    */
   public
-  boolean isLinked(String sAreaName)
+  boolean isLinked(String areaName)
   {
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
     if(mapInfo == null) return false;
     String sLinkedArea = (String) mapInfo.get(sAREA_LINKEDTO);
     return sLinkedArea != null;
@@ -602,14 +607,14 @@ class ReportInfo implements Serializable
   /**
    * Aggiunge un sottoreport.
    *
-   * @param sAreaName Nome dell'area
+   * @param areaName Nome dell'area
    * @param sSubreport Riferimento al sottoreport
    */
   public
-  void addSubreport(String sAreaName, String sSubreport)
+  void addSubreport(String areaName, String subreport)
   {
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
-    if(mapInfo != null) mapInfo.put(sAREA_SUBREPORT, sSubreport);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
+    if(mapInfo != null) mapInfo.put(sAREA_SUBREPORT, subreport);
   }
   
   /**
@@ -622,8 +627,8 @@ class ReportInfo implements Serializable
   String getAreaSubreport(int iIndex)
   {
     if(listAree.size() <= iIndex) return null;
-    String sAreaName = (String) listAree.get(iIndex);
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
+    String areaName = (String) listAree.get(iIndex);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
     if(mapInfo == null) return null;
     return (String) mapInfo.get(sAREA_SUBREPORT);
   }
@@ -631,13 +636,13 @@ class ReportInfo implements Serializable
   /**
    * Restituisce il riferimento al sottoreport legato all'area.
    *
-   * @param sAreaName String
+   * @param areaName String
    * @return Riferimento al sottoreport 
    */
   public
-  String getAreaSubreport(String sAreaName)
+  String getAreaSubreport(String areaName)
   {
-    Map<String,Object> mapInfo = mapAreaInfo.get(sAreaName);
+    Map<String, Object> mapInfo = mapAreaInfo.get(areaName);
     if(mapInfo == null) return null;
     return (String) mapInfo.get(sAREA_SUBREPORT);
   }

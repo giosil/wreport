@@ -39,17 +39,17 @@ class ReportFactory
   }
   
   public static
-  IReportBuilder getReportBuilder(String sType)
+  IReportBuilder getReportBuilder(String type)
   {
     IReportBuilder reportBuilder = null;
     
-    if(sType != null && sType.equalsIgnoreCase("jasper")) {
+    if(type != null && type.equalsIgnoreCase("jasper")) {
       reportBuilder = new JasperReportsBuilder();
     }
-    else if(sType != null && sType.equalsIgnoreCase("mock")) {
+    else if(type != null && type.equalsIgnoreCase("mock")) {
       reportBuilder = new MockReportBuilder();
     }
-    else if(sType != null && sType.equalsIgnoreCase("test")) {
+    else if(type != null && type.equalsIgnoreCase("test")) {
       reportBuilder = new MockReportBuilder();
     }
     else {
