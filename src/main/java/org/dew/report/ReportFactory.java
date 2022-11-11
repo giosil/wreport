@@ -11,6 +11,16 @@ class ReportFactory
   public static String REPORTS_FOLDER  = "reports";
   public static String PAR_IMAGES_PATH = "IMAGES_PATH";
   
+  public static 
+  boolean exists(String template) 
+  {
+    if(template == null || template.length() == 0) return false;
+    
+    URL urlTemplate = Thread.currentThread().getContextClassLoader().getResource(REPORTS_FOLDER + "/" + template);
+    
+    return urlTemplate != null;
+  }
+  
   public static
   ReportInfo getReportInfo(String title, String template)
   {
