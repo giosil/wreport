@@ -54,6 +54,7 @@ class WebReport extends HttpServlet
 
 - `git clone https://github.com/giosil/wreport.git`
 - `mvn clean install`
+- `mvn dependency:copy-dependencies`
 
 ## Contributors
 
