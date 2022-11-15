@@ -56,6 +56,42 @@ class WebReport extends HttpServlet
 - `mvn clean install`
 - `mvn dependency:copy-dependencies`
 
+## Dependencies
+
+### Strictly necessary
+
+- commons-beanutils-1.9.4.jar
+- commons-collections-3.2.2.jar
+- commons-collections4-4.2.jar
+- commons-digester-2.1.jar
+- commons-logging-1.1.1.jar
+- itext-2.1.7.jar
+- jasperreports-6.20.0.jar
+- jcommon-1.0.23.jar
+
+### Optional
+
+- bcmail-jdk14-1.38.jar
+- bcmail-jdk14-138.jar
+- bcprov-jdk14-1.38.jar
+- bcprov-jdk14-138.jar
+- bctsp-jdk14-1.38.jar
+- ecj-3.21.0.jar
+- jackson-annotations-2.13.3.jar
+- jackson-core-2.13.3.jar
+- jackson-databind-2.13.3.jar
+- jackson-dataformat-xml-2.13.3.jar
+- jfreechart-1.0.19.jar
+- stax2-api-4.2.1.jar
+- woodstox-core-6.2.7.jar
+
+### ReportUtils
+
+- fontbox-2.0.15.jar
+- pdfbox-2.0.15.jar
+- itextpdf-5.5.5.jar
+- xmlworker-5.5.5.jar
+
 ## Contributors
 
 * [Giorgio Silvestris](https://github.com/giosil)
