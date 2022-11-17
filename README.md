@@ -56,6 +56,11 @@ class WebReport extends HttpServlet
 - `mvn clean install`
 - `mvn dependency:copy-dependencies`
 
+## Revert and clean 
+
+- `git reset –hard` to discarde any changes not committed to tracked files in the working tree
+- `git clean -fxd` to delete untracked file recursively (f) and directories (d) also in .gitignore (x)
+
 ## Dependencies
 
 ### Strictly necessary
