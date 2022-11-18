@@ -70,9 +70,10 @@ class WebReport extends HttpServlet
 - commons-collections4-4.2.jar
 - commons-digester-2.1.jar
 - commons-logging-1.1.1.jar
-- itext-2.1.7.jar
-- jasperreports-6.20.0.jar
 - jcommon-1.0.23.jar
+- itext-2.1.7.jar (to export to pdf)
+- jasperreports-6.20.0.jar
+- jasperreports-fonts-6.20.0.jar (to render correctly styled text in pdf)
 
 ### Optional
 
