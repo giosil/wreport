@@ -69,4 +69,32 @@ class ReportFactory
     
     return reportBuilder;
   }
+  
+  public static 
+  String getContentType(String type) 
+  {
+    if(type == null || type.length() == 0) {
+      return "application/pdf";
+    }
+    String typeLC = type.trim().toLowerCase();
+    if(typeLC.equals("pdf")) {
+      return "application/pdf";
+    }
+    if(typeLC.equals("docx")) {
+      return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    }
+    if(typeLC.equals("xlsx")) {
+      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    }
+    if(typeLC.equals("xls")) {
+      return "application/vnd.ms-excel";
+    }
+    if(typeLC.equals("htm")  || typeLC.equals("html")) {
+      return "text/html";
+    }
+    if(typeLC.equals("xml")) {
+      return "text/xml";
+    }
+    return "application/pdf";
+  }
 }
