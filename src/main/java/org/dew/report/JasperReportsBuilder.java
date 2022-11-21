@@ -15,10 +15,16 @@ import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+
 import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
+import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 
 /**
  * Classe per la costruzione di un report tramite JasperReports.
@@ -89,28 +95,58 @@ class JasperReportsBuilder implements IReportBuilder
     if (conn == null) {
       JRDataSource jrDataSource = getDataSource();
       jasperPrint = JasperFillManager.fillReport(urlTemplate.openStream(), mapParameters, jrDataSource);
-    } else {
+    } 
+    else {
       jasperPrint = JasperFillManager.fillReport(urlTemplate.openStream(), mapParameters, conn);
     }
     
-    String sType = reportInfo.getType();
-    if (sType == null || sType.equalsIgnoreCase("pdf")) {
+    String type = reportInfo.getType();
+    if (type == null || type.equalsIgnoreCase("pdf")) {
       JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-    } else if (sType.equalsIgnoreCase("xls")) {
-      JRXlsExporter exporter = new JRXlsExporter();
+    }
+    else if (type.equalsIgnoreCase("docx")) {
+      JRDocxExporter exporter = new JRDocxExporter();
       
       exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
       exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
       
-      SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
+      exporter.exportReport();
+    }
+    else if (type.equalsIgnoreCase("xlsx")) {
+      SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
       configuration.setOnePagePerSheet(Boolean.FALSE);
+      
+      JRXlsxExporter exporter = new JRXlsxExporter();
       exporter.setConfiguration(configuration);
+      exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+      exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
       
       exporter.exportReport();
-    } else if (sType.equalsIgnoreCase("xml")) {
+    }
+    else if (type.equalsIgnoreCase("xls")) {
+      SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
+      configuration.setOnePagePerSheet(Boolean.FALSE);
+      
+      JRXlsExporter exporter = new JRXlsExporter();
+      exporter.setConfiguration(configuration);
+      exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+      exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+      
+      exporter.exportReport();
+    } 
+    else if (type.equalsIgnoreCase("xml")) {
       JasperExportManager.exportReportToXmlStream(jasperPrint, outputStream);
-    } else {
-      throw new Exception("Type report " + sType + " unsupported.");
+    }
+    else if (type.equalsIgnoreCase("htm") || type.equalsIgnoreCase("html")) {
+      HtmlExporter exporter = new HtmlExporter();
+      
+      exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+      exporter.setExporterOutput(new SimpleHtmlExporterOutput(outputStream));
+      
+      exporter.exportReport();
+    }
+    else {
+      throw new Exception("Type report " + type + " unsupported.");
     }
   }
 

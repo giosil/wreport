@@ -52,10 +52,12 @@ public class TestWReport extends TestCase {
   {
     FileOutputStream fileOutputStream = null;
     try {
+      String type = "pdf";
+      
       File folder = new File(getDesktop());
       if(!folder.exists()) folder.mkdirs();
       
-      String sFileOutput = folder + File.separator + "test.pdf";
+      String sFileOutput = folder + File.separator + "test." + type;
       System.out.println("new FileOutputStream(" + sFileOutput + ")...");
       fileOutputStream = new FileOutputStream(sFileOutput);
       
@@ -68,6 +70,7 @@ public class TestWReport extends TestCase {
       
       System.out.println("ReportFactory.getReportInfo...");
       ReportInfo reportInfo = ReportFactory.getReportInfo("Comuni", "comuni.jasper");
+      reportInfo.setType(type);
       reportInfo.addArea("Detail", listData);
       
       System.out.println("ReportFactory.getReportBuilder...");
