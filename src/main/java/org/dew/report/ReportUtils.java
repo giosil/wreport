@@ -256,7 +256,7 @@ class ReportUtils
   String detectContentType(byte[] content)
   {
     // <! or <H = text/html
-    // <A or <M = application/hl7-v2+xml
+    // <A or <M = text/x-cda-r2+xml
     // <C       = application/hl7-v3+xml
     // <? or <* = text/xml
     // #        = text/plain
@@ -295,7 +295,7 @@ class ReportUtils
               return "text/html";
             }
             else if(b == 'A' || b == 'M') {
-              return "application/hl7-v2+xml";
+              return "text/x-cda-r2+xml";
             }
             else if(b == 'C') {
               return "application/hl7-v3+xml";
