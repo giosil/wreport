@@ -256,8 +256,8 @@ class ReportUtils
   String detectContentType(byte[] content)
   {
     // <! or <H = text/html
-    // <A or <M = text/x-cda-r2+xml
-    // <C       = application/hl7-v3+xml
+    // <A or <M = application/hl7-v2+xml
+    // <C       = text/x-cda-r2+xml
     // <? or <* = text/xml
     // #        = text/plain
     // %PDF     = application/pdf
@@ -295,14 +295,14 @@ class ReportUtils
               return "text/html";
             }
             else if(b == 'A' || b == 'M') {
-              return "text/x-cda-r2+xml";
+              return "application/hl7-v2+xml";
             }
             else if(b == 'C') {
-              return "application/hl7-v3+xml";
+              return "text/x-cda-r2+xml";
             }
             else {
               int indexOf = byteArrayIndexOf(content, "ClinicalDocument".getBytes());
-              if(indexOf >= 0) return "application/hl7-v3+xml";
+              if(indexOf >= 0) return "text/x-cda-r2+xml";
               
               indexOf = byteArrayIndexOf(content, "XDW.WorkflowDocument".getBytes());
               if(indexOf >= 0) return "application/xdw";
