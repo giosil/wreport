@@ -58,7 +58,7 @@ class WebReport extends HttpServlet
 
 ## Revert and clean 
 
-- `git reset –hard` to discarde any changes not committed to tracked files in the working tree
+- `git reset --hard` to discarde any changes not committed to tracked files in the working tree
 - `git clean -fxd` to delete untracked file recursively (f) and directories (d) also in .gitignore (x)
 
 ## Dependencies
