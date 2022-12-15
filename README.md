@@ -1,4 +1,5 @@
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=giosil_wreport)
+<br/>
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=giosil_wreport&metric=bugs)](https://sonarcloud.io/summary/new_code?id=giosil_wreport)
 
 ---
