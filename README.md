@@ -1,3 +1,7 @@
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=giosil_wreport&metric=bugs)](https://sonarcloud.io/summary/new_code?id=giosil_wreport)
+
+---
+
 # WReport - Wrap Report generation
 
 A small library to wrap report generation engines.
