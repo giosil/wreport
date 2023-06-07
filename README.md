@@ -60,7 +60,9 @@ class WebReport extends HttpServlet
 
 - `git clone https://github.com/giosil/wreport.git`
 - `mvn clean install`
+- `mvn dependency:resolve -U`
 - `mvn dependency:copy-dependencies`
+- `mvn dependency:purge-local-repository`
 
 ## Revert and clean 
 
