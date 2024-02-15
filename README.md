@@ -8,6 +8,12 @@
 
 A small library to wrap report generation engines.
 
+Using `com.lowagie.itext 2.1.7` you may encounter the following warning: `Unpatched iText found, cannot use glyph rendering`.
+
+You can use the modified version of library by downloading it from:
+
+https://jasperreports.sourceforge.net/maven2/com/lowagie/itext/
+
 ## Example
 
 ```java
