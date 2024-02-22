@@ -180,15 +180,15 @@ class JasperReportsBuilder implements IReportBuilder
    *
    * @return Map
    */
-  protected Map<String,Object> getParameters() {
-    Map<String,Object> mapResult = new HashMap<String,Object>();
+  protected Map<String, Object> getParameters() {
+    Map<String, Object> mapResult = new HashMap<String, Object>();
     
     String sBT = reportInfo.getBackgroundText();
     mapResult.put("BT", sBT);
     String sTitle = reportInfo.getTitle();
     mapResult.put("title", sTitle);
     
-    Map<String,Object> mapRH = reportInfo.getReportHeader();
+    Map<String, Object> mapRH = reportInfo.getReportHeader();
     if (mapRH != null) {
       Iterator<Map.Entry<String, Object>> oItEntry = mapRH.entrySet().iterator();
       while (oItEntry.hasNext()) {
@@ -196,7 +196,7 @@ class JasperReportsBuilder implements IReportBuilder
         mapResult.put("RH." + entry.getKey(), entry.getValue());
       }
     }
-    Map<String,Object> mapPH = reportInfo.getPageHeader();
+    Map<String, Object> mapPH = reportInfo.getPageHeader();
     if (mapPH != null) {
       Iterator<Map.Entry<String, Object>> oItEntry = mapPH.entrySet().iterator();
       while (oItEntry.hasNext()) {
