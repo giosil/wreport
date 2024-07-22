@@ -17,7 +17,7 @@ https://jasperreports.sourceforge.net/maven2/com/lowagie/itext/
 ## Example
 
 ```java
-List<Map<String,Object>> data = new ArrayList<Map<String,Object>>();
+List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 // Populate data...
 
 ReportInfo ri = ReportFactory.getReportInfo("Test report", "test.jasper");
@@ -39,7 +39,7 @@ class WebReport extends HttpServlet
     throws ServletException, IOException 
   {
     try {
-      List<Map<String,Object>> listData = DAOTestData.getAll();
+      List<Map<String, Object>> listData = DAOTestData.getAll();
       
       ReportInfo reportInfo = ReportFactory.getReportInfo("Comuni", "comuni.jasper");
       
