@@ -35,10 +35,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -91,34 +91,23 @@ class ReportServlet extends HttpServlet
     }
     
     // Get report data from body
-    Map<String, Object> mapData = readBodyRequest(request);
+    List<Map<String, Object>> listData = readData(request);
     
     // Get report data from parameters
-    Enumeration<String> enumeration = request.getParameterNames();
-    while(enumeration.hasMoreElements()) {
-      String paramName = (String) enumeration.nextElement();
-      mapData.put(paramName.substring(1), request.getParameter(paramName));
-    }
-    
-    // Extract report parameters
-    Map<String, Object> mapParameters = new HashMap<String, Object>();
-    Iterator<Map.Entry<String, Object>> iterator = mapData.entrySet().iterator();
-    while(iterator.hasNext()) {
-      Map.Entry<String, Object> entry = iterator.next();
-      String parameterName = entry.getKey();
-      if(parameterName.startsWith("_")) {
-        mapParameters.put(parameterName.substring(1), entry.getValue());
+    if(listData.size() == 0) {
+      Map<String, Object> mapData = null;
+      Enumeration<String> enumeration = request.getParameterNames();
+      while(enumeration.hasMoreElements()) {
+        String paramName = (String) enumeration.nextElement();
+        if(mapData == null) mapData = new HashMap<String, Object>();
+        mapData.put(paramName, request.getParameter(paramName));
       }
+      if(mapData != null) listData.add(mapData);
     }
     
     // Generate report
     try {
-      List<Map<String, Object>> listData = new ArrayList<Map<String, Object>>();
-      listData.add(mapData);
-      
       ReportInfo reportInfo = ReportFactory.getReportInfo("Report", template);
-      reportInfo.setParameters(mapParameters);
-      
       reportInfo.setType(type);
       reportInfo.addArea("Detail", listData);
       
@@ -129,15 +118,12 @@ class ReportServlet extends HttpServlet
       reportBuilder.generate(response.getOutputStream());
     }
     catch(Exception ex) {
-      String message = ex.getMessage();
-      if(message == null || message.length() == 0) message = ex.toString();
-      sendMessage(response, "Si &egrave; verificato un errore: " + message);
-      return;
+      ex.printStackTrace();
     }
   }
   
   public
-  Map<String, Object> readBodyRequest(HttpServletRequest request)
+  List<Map<String, Object>> readData(HttpServletRequest request)
   {
     String result = "";
     InputStream is = null;
@@ -157,19 +143,29 @@ class ReportServlet extends HttpServlet
     finally {
       if(is != null) try{ is.close(); } catch(Exception ex) {}
     }
-    result = result.trim();
-    if(result.length() < 2 || !result.startsWith("{") || !result.endsWith("}")) {
-      return new HashMap<String, Object>();
-    }
     try {
+      result = result.trim();
+      if(result.length() < 2) {
+        return new ArrayList<Map<String,Object>>();
+      }
       ObjectMapper objectMapper = new ObjectMapper();
-      
-      return objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {});
+      if(result.startsWith("{") && result.endsWith("}")) {
+        List<Map<String, Object>> listResult = new ArrayList<Map<String,Object>>();
+        Map<String, Object> mapData = objectMapper.readValue(result, new TypeReference<Map<String, Object>>() {});
+        if(mapData != null) {
+          listResult.add(mapData);
+        }
+        return listResult;
+      }
+      if(!result.startsWith("[") || !result.endsWith("]")) {
+        return new ArrayList<Map<String,Object>>();
+      }
+      return objectMapper.readValue(result, new TypeReference<List<Map<String, Object>>>() {});
     }
     catch(Exception ex) {
       ex.printStackTrace();
     }
-    return new HashMap<String, Object>();
+    return new ArrayList<Map<String,Object>>();
   }
   
   protected 
@@ -196,16 +192,22 @@ class ReportServlet extends HttpServlet
 ```typescript
 namespace APP {
 
-  export function launchReport(report: string, data?: any, params?: any) {
+  export function launchReport(report: string, data?: any) {
     if (!report) {
       showWarning('Report non specificato');
       return;
     }
-    if (!data || typeof data != 'object') {
-      data = {};
+    window['BSIT'].showLoader();
+    if (!data) {
+      data = [];
     }
-    if (params && typeof params == 'object') {
-      data = {...data, ...params};
+    else if (!Array.isArray(data)) {
+      if(typeof data !== 'object') {
+        data = [{"value" : data}];
+      }
+      else {
+        data = [data];
+      }
     }
     fetch("/report/" + report + ".pdf", {
       method: "POST",
@@ -215,6 +217,7 @@ namespace APP {
       body: JSON.stringify(data)
     })
     .then(response => {
+      window['BSIT'].hideLoader();
       if (!response.ok) {
         throw new Error('Errore nella risposta del server');
       }
@@ -229,6 +232,7 @@ namespace APP {
       setTimeout(() => URL.revokeObjectURL(u), 60000);
     })
     .catch(error => {
+      window['BSIT'].hideLoader();
       console.error('Errore in launchReport(' + report + ',...)', error);
       showError('Report ' + report + ' non disponibile.');
     });
