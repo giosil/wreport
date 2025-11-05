@@ -14,6 +14,8 @@ You can use the modified version of library by downloading it from:
 
 https://jasperreports.sourceforge.net/maven2/com/lowagie/itext/
 
+From 6.21 `com.itextpdf.itextpdf 5.5.6` is required.
+
 ## Example
 
 ```java
@@ -265,7 +267,9 @@ namespace APP {
 - commons-logging-1.1.1.jar
 - jcommon-1.0.23.jar
 - itext-2.1.7.jar (or patched version: e.g. itext-2.1.7.js5.jar)
-- jasperreports-6.20.0.jar
+- jasperreports 7.x
+
+-6.20.0.jar
 - jasperreports-fonts-6.20.0.jar (to render correctly styled text in pdf)
 
 ### Optional
@@ -290,6 +294,36 @@ namespace APP {
 - pdfbox-2.0.15.jar
 - itextpdf-5.5.5.jar
 - xmlworker-5.5.5.jar
+
+### jasperreports 7.x
+
+```xml
+<dependency>
+	<groupId>com.itextpdf</groupId>
+	<artifactId>itextpdf</artifactId>
+	<version>5.5.6</version>
+</dependency>
+<dependency>
+	<groupId>net.sf.jasperreports</groupId>
+	<artifactId>jasperreports</artifactId>
+	<version>7.0.3</version>
+</dependency>
+<dependency>
+	<groupId>net.sf.jasperreports</groupId>
+	<artifactId>jasperreports-excel-poi</artifactId>
+	<version>7.0.3</version>
+</dependency>
+<dependency>
+	<groupId>net.sf.jasperreports</groupId>
+	<artifactId>jasperreports-pdf</artifactId>
+	<version>7.0.3</version>
+</dependency>
+<dependency>
+	<groupId>net.sf.jasperreports</groupId>
+	<artifactId>jasperreports-fonts</artifactId>
+	<version>7.0.3</version>
+</dependency>
+```
 
 ## Contributors
 
